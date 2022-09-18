@@ -16,6 +16,7 @@ import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/Supaba
 	    <input type="password" required v-model="passwd" ><br>
       <button v-on:click="register()">Sign Up</button>
       <button v-on:click="login()">Sign In</button>
+      <button v-on:click="reset()">Reset</button>
       <p>
       <label id="status"> You are not yet connected </label><br>  
       </p>
@@ -62,9 +63,31 @@ export default {
       } catch (error) {
         alert(error.error_description || error.message);
       } 
-    }
-  }  
-}
+    },
+    async reset() {
+      const { data, error } = await supabase.auth.api.resetPasswordForEmail(
+        this.email
+      )
+    },
+    async logout() {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      document.getElementById('status').innerHTML = 'You are now logged out !'
+    },
+  },
+  mounted() {
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event == 'PASSWORD_RECOVERY') {
+        const newPassword = prompt('What would you like your new password to be?')
+        const { data, error } = await supabase.auth.update({
+          password: newPassword,
+        })
+        if (data) alert('Password updated successfully!')
+        if (error) alert('There was an error updating your password.')
+      }
+    })
+  }
+}  
 </script>
 
 <style>
