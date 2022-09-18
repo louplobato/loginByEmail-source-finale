@@ -17,6 +17,7 @@ import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/Supaba
       <button v-on:click="register()">Sign Up</button>
       <button v-on:click="login()">Sign In</button>
       <button v-on:click="reset()">Reset</button>
+      <button v-on:click="logout()">Sign out</button>
       <p>
       <label id="status"> You are not yet connected </label><br>  
       </p>
