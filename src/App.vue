@@ -29,7 +29,7 @@ async function logout() {
 async function login() {
   try {
     const { user, session, error } = await supabase.auth.signIn({
-      provider: 'google',
+      provider: 'github',
     });
     if (error) throw error;
   } catch (error) {
